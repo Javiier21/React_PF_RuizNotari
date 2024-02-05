@@ -17,9 +17,9 @@ const Checkout = () => {
             setLoading(true)
             const objOrder = {
                 buyer: {
-                    name: 'Sebastian Zuviria',
+                    name: 'Javier Ruiz',
                     phone: '1234454905',
-                    email: 'contact@sebaz.io'
+                    email: 'contact@javi.io'
                 },
                 items: cart,
                 total
