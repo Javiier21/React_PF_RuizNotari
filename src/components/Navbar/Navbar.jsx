@@ -4,6 +4,7 @@ import CartWidget from '../CartWidget/CartWidget'
 import { Link, useNavigate } from 'react-router-dom'
 import { db } from '../../services/firebase/firebaseConfig'
 import { getDocs, collection, query, orderBy } from 'firebase/firestore'
+import '../../../node_modules/flowbite/dist/flowbite.css'; // Importar el archivo CSS de FlowBite 
  
 const Navbar = () => {
     const [categories, setCategories] = useState([])
@@ -14,27 +15,37 @@ const Navbar = () => {
 
         getDocs(categoriesCollection)
             .then(querySnapshot => {
-                console.log(querySnapshot)
+                
                 const categoriesAdapted = querySnapshot.docs.map(doc => {
                     const fields = doc.data()
                     return { id: doc.id, ...fields }
                 })
 
-                setCategories(categoriesAdapted)
-            })
+                setCategories(categoriesAdapted)                
+            })            
     }, [])
 
     return (
-        <nav className={classes.container} style={{ display: 'flex', justifyContent: 'space-around'}}>
-            <h1 onClick={() => navigate('/')} className={classes.rojo}>Ecommerce</h1>
-            <section className={classes.categories}>
-                {
-                    categories.map(cat => {
-                        return <Link key={cat.id} to={`/category/${cat.slug}`} className='btn btn-success'>{cat.name}</Link>
-                    })
-                }
-            </section>
-            <CartWidget />
+        <nav className={`navbar is-primary ${classes.container}`} style={{ justifyContent: 'space-around' }}>
+            <div className="navbar-brand">
+                <h1 onClick={() => navigate('/')} className={`navbar-item ${classes.rojo}`}>Ecommerce</h1>
+            </div>
+            <div className="navbar-menu">
+                <div className="navbar-start">
+                    {
+                        categories.map(cat => (
+                            <Link key={cat.id} to={`/category/${cat.slug}`} className='navbar-item'>
+                                {cat.name}
+                            </Link>
+                        ))
+                    }
+                </div>
+            </div>
+            <div className="navbar-end">
+                <Link to="/cart" className="navbar-item">
+                    <CartWidget />
+                </Link>
+            </div>
         </nav>
     )
 }
